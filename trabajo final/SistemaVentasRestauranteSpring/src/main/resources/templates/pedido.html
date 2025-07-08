@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuevo Pedido</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}" />
+</head>
+<body>
+    <h1>Registrar Pedido</h1>
+
+    <form th:action="@{/pedido/guardar}" th:object="${pedido}" method="post">
+        <label for="cliente">Nombre del Cliente:</label>
+        <input type="text" id="cliente" th:field="*{cliente}" required />
+
+        <label for="plato">Plato:</label>
+        <select id="plato" th:field="*{plato.id}" required>
+            <option value="" disabled selected>Selecciona un plato</option>
+            <option th:each="plato : ${platos}" 
+                    th:value="${plato.id}" 
+                    th:attr="data-precio=${plato.precio}"
+                    th:text="${plato.nombre + ' - S/ ' + plato.precio}">
+            </option>
+        </select>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" th:field="*{cantidad}" min="1" required />
+
+        <input type="hidden" th:field="*{precio}" id="precio" />
+
+        <button type="submit">Guardar Pedido</button>
+    </form>
+
+    <div class="footer-link">
+        <a th:href="@{/pedido/resumen}">Ver Resumen</a>
+    </div>
+
+    <script>
+        const selectPlato = document.getElementById('plato');
+        const inputCantidad = document.getElementById('cantidad');
+        const inputPrecio = document.getElementById('precio');
+
+        function actualizarPrecio() {
+            const selectedOption = selectPlato.options[selectPlato.selectedIndex];
+            const precioUnitario = parseFloat(selectedOption.getAttribute('data-precio')) || 0;
+            const cantidad = parseInt(inputCantidad.value) || 0;
+            inputPrecio.value = (precioUnitario * cantidad).toFixed(2);
+        }
+
+        selectPlato.addEventListener('change', actualizarPrecio);
+        inputCantidad.addEventListener('input', actualizarPrecio);
+        document.addEventListener('DOMContentLoaded', actualizarPrecio);
+    </script>
+</body>
+</html>

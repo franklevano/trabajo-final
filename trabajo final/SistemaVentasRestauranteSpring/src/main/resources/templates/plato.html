@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Platos</title>
+</head>
+<body>
+    <h1>Lista de Platos</h1>
+
+    <form th:action="@{/plato/guardar}" th:object="${plato}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required /><br/>
+        <label>Precio:</label>
+        <input type="number" th:field="*{precio}" step="0.01" required /><br/>
+        <button type="submit">Guardar</button>
+    </form>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p : ${platos}">
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.nombre}"></td>
+                <td th:text="${p.precio}"></td>
+                <td>
+                    <a th:href="@{/plato/editar/{id}(id=${p.id})}">Editar</a>
+                    <a th:href="@{/plato/eliminar/{id}(id=${p.id})}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Resumen de Pedidos</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}" />
+</head>
+<body>
+    <h1>Resumen de Pedidos</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Plato</th>
+                <th>Cantidad</th>
+                <th>Precio Total (S/)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pedido : ${listaPedidos}">
+                <td th:text="${pedido.cliente}"></td>
+                <td th:text="${pedido.plato != null ? pedido.plato.nombre : 'N/A'}"></td>
+                <td th:text="${pedido.cantidad}"></td>
+                <td th:text="${pedido.precio}"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"><strong>Total General (S/):</strong></td>
+                <td th:text="${totalGeneral}"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="footer-link">
+        <a th:href="@{/pedido/nuevo}">← Volver a Registrar Pedido</a>
+    </div>
+</body>
+</html>
